@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My WebApp Deployment Dashboard</title>
+  <style>
+    :root {
+      --bg-color: #0f0f10;
+      --text-color: #ffffff;
+      --card-bg: #1c1c1e;
+      --accent: #4f46e5;
+      --success: #4ade80;
+      --error: #ef4444;
+    }
+
+    body.light-mode {
+      --bg-color: #f4f4f9;
+      --text-color: #222;
+      --card-bg: #ffffff;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      text-align: center;
+      padding: 50px;
+      transition: all 0.5s ease;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-top: 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 15px;
+      display: inline-block;
+      padding: 30px 40px;
+      margin-top: 30px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #4338ca;
+    }
+
+    .clock {
+      font-size: 1.3rem;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .status.error {
+      color: var(--error);
+    }
+
+    .progress-container {
+      width: 100%;
+      max-width: 300px;
+      height: 10px;
+      background: #333;
+      border-radius: 10px;
+      margin: 15px auto;
+      overflow: hidden;
+      display: none;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: var(--accent);
+      border-radius: 10px;
+      transition: width 0.2s linear;
+    }
+
+    .theme-icon {
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🚀 My WebApp Deployment Dashboard</h1>
+    <p>Your Java Web Application is deployed via Jenkins + Docker + Tomcat!</p>
+
+    <button onclick="checkDeployment()">Check Deployment</button>
+    <button onclick="toggleTheme()">Toggle Theme <span class="theme-icon">🌙</span></button>
+
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="status" id="status">Status: Idle</div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 My WebApp | Powered by Jenkins CI/CD Pipeline</p>
+  </div>
+
+  <script>
+    // Function to simulate deployment check with progress bar
+    function checkDeployment() {
+      const statusEl = document.getElementById("status");
+      const progressContainer = document.getElementById("progressContainer");
+      const progressBar = document.getElementById("progressBar");
+
+      statusEl.textContent = "Checking Deployment...";
+      progressContainer.style.display = "block";
+      progressBar.style.width = "0%";
+      statusEl.classList.remove("error");
+      statusEl.style.color = "#fff";
+
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 5;
+        progressBar.style.width = progress + "%";
+
+        if (progress >= 100) {
+          clearInterval(interval);
+          const success = Math.random() > 0.3; // 70% chance success
+          if (success) {
+            statusEl.textContent = "✅ Deployment Successful!";
+            statusEl.style.color = "#4ade80";
+          } else {
+            statusEl.textContent = "❌ Deployment Failed!";
+            statusEl.classList.add("error");
+            statusEl.style.color = "#ef4444";
+          }
+        }
+      }, 100);
+    }
+
+    // Function to toggle dark/light theme
+    function toggleTheme() {
+      const body = document.body;
+      const icon = document.querySelector(".theme-icon");
+      body.classList.toggle("light-mode");
+      icon.textContent = body.classList.contains("light-mode") ? "☀️" : "🌙";
+    }
+
+    // Function to update live clock
+    function updateClock() {
+      const clock = document.getElementById("clock");
+      const now = new Date();
+      clock.textContent = "🕒 " + now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
